@@ -1,393 +1,1277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ionic Equation Masterclass</title>
-<style>
-:root{
-  --cream:#f7f1e8;
-  --cream-2:#fff8ee;
-  --card:#fffaf2;
-  --ink:#111111;
-  --orange:#ff6b00;
-  --orange-2:#ff8a2a;
-  --green:#1fbf61;
-  --red:#ef3b2d;
-  --yellow:#ffd23f;
-  --blue:#3da5ff;
-  --muted:#665d52;
-  --border:4px solid var(--ink);
-  --border-thin:3px solid var(--ink);
-  --shadow:8px 8px 0 var(--ink);
-  --shadow-sm:5px 5px 0 var(--ink);
-  --radius:22px;
-  --radius-sm:16px;
-  --gap:16px;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:Inter, ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background:var(--cream);
-  color:var(--ink);
-  line-height:1.35;
-  padding:18px;
-}
-button,select{font:inherit}
-.app{
-  max-width:1500px;
-  margin:0 auto;
-  display:grid;
-  gap:var(--gap);
-}
-.top-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:var(--gap);
-  align-items:stretch;
-}
-.hero,.controls-panel,.panel{
-  background:var(--card);
-  border:var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-}
-.hero{
-  padding:26px 28px;
-  display:grid;
-  grid-template-columns:92px 1fr;
-  gap:22px;
-  align-items:center;
-  min-height:190px;
-}
-.badge-icon{
-  width:82px;
-  height:82px;
-  border:var(--border);
-  border-radius:26px;
-  background:var(--orange);
-  box-shadow:var(--shadow-sm);
-  display:grid;
-  place-items:center;
-  font-size:2.4rem;
-  transform:rotate(-2deg);
-}
-h1{
-  margin:0;
-  font-size:clamp(2.2rem,4vw,4.6rem);
-  line-height:.94;
-  letter-spacing:-.07em;
-  font-weight:950;
-}
-.byline{
-  margin:16px 0 0;
-  color:var(--muted);
-  font-size:1.15rem;
-  font-weight:900;
-}
-.controls-panel{
-  padding:24px;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-  align-content:start;
-  min-height:190px;
-}
-.btn{
-  border:var(--border-thin);
-  border-radius:18px;
-  background:#f3e2cf;
-  color:var(--ink);
-  padding:16px 18px;
-  min-height:76px;
-  font-weight:950;
-  font-size:1.05rem;
-  cursor:pointer;
-  box-shadow:var(--shadow-sm);
-  transition:transform .14s ease, box-shadow .14s ease, background .14s ease;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  gap:8px;
-}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
-.btn:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--ink)}
-.btn-primary{background:var(--orange);color:var(--ink)}
-.btn-dark{background:var(--ink);color:#fff}
-.btn-green{background:var(--green);color:var(--ink)}
-.btn-blue{background:var(--blue);color:var(--ink)}
-.btn-small{min-height:54px;padding:10px 16px;font-size:.98rem;border-radius:14px}
-.menu-grid{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(180px,1fr));
-  gap:var(--gap);
-  align-items:stretch;
-}
-.level-card{
-  background:var(--card);
-  border:var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow-sm);
-  padding:18px;
-  cursor:pointer;
-  transition:transform .14s ease, box-shadow .14s ease, background .14s ease;
-  min-height:210px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-.level-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink);background:#fff3e3}
-.level-card.completed{background:#e9ffe9}
-.level-kicker{
-  display:inline-flex;
-  width:max-content;
-  background:var(--orange);
-  border:var(--border-thin);
-  border-radius:999px;
-  padding:6px 10px;
-  font-weight:950;
-  margin-bottom:12px;
-}
-.level-card h3{margin:0 0 8px;font-size:1.3rem;line-height:1.05;font-weight:950;letter-spacing:-.04em}
-.level-card p{margin:0;color:var(--muted);font-weight:750;font-size:.95rem}
-.score-display{margin-top:14px;font-weight:950;color:var(--ink)}
-.star-rating{display:inline-flex;gap:2px;color:var(--orange);font-size:1.35rem;-webkit-text-stroke:1px var(--ink);paint-order:stroke fill}
-.game-grid{
-  display:grid;
-  grid-template-columns:330px 1fr;
-  gap:var(--gap);
-  align-items:start;
-}
-.sidebar{
-  background:var(--card);
-  border:var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:20px;
-  position:sticky;
-  top:16px;
-}
-.reaction-chip{
-  background:var(--orange);
-  border:var(--border-thin);
-  border-radius:999px;
-  padding:8px 12px;
-  font-weight:950;
-  display:inline-flex;
-  margin-bottom:12px;
-}
-.sidebar h2{margin:0 0 10px;font-size:2.1rem;line-height:1;letter-spacing:-.06em;font-weight:950}
-.sidebar p{margin:0 0 18px;color:var(--muted);font-weight:800}
-.progress-list{display:grid;gap:10px;margin:18px 0}
-.progress-item{
-  border:var(--border-thin);
-  border-radius:14px;
-  padding:12px;
-  background:#f3e2cf;
-  font-weight:950;
-  box-shadow:3px 3px 0 var(--ink);
-}
-.progress-item.active{background:var(--orange)}
-.progress-item.done{background:#dfffe9}
-.panel{padding:22px;margin-bottom:var(--gap);transition:transform .25s ease, opacity .25s ease}
-.step{display:none;opacity:0;transform:translateY(8px)}
-.step.active{display:block;animation:popIn .22s ease forwards}
-.step.completed{display:block;opacity:.85;background:#fffdf8;border-color:var(--green);pointer-events:none}
-.step.completed .btn-primary,.step.completed select{display:none}
-.step h3{margin:0 0 6px;font-size:1.8rem;letter-spacing:-.04em;font-weight:950}
-.step p{margin:0 0 12px;font-size:1.05rem;font-weight:800;color:var(--muted)}
-.progress-bar{
-  background:var(--yellow);
-  border:var(--border);
-  border-radius:var(--radius-sm);
-  box-shadow:var(--shadow-sm);
-  padding:14px 16px;
-  font-weight:950;
-  font-size:1.1rem;
-  margin-bottom:var(--gap);
-  text-align:center;
-}
-.equation-box{
-  border:var(--border);
-  border-radius:var(--radius-sm);
-  box-shadow:inset 4px 4px 0 rgba(0,0,0,.08);
-  background:var(--cream-2);
-  padding:18px;
-  min-height:96px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  align-items:center;
-  justify-content:center;
-  font-size:1.45rem;
-  font-weight:950;
-  line-height:1.05;
-  overflow-x:auto;
-}
-.chem-part,.compound-card,.ion{
-  background:#fff;
-  border:var(--border-thin);
-  border-radius:14px;
-  box-shadow:4px 4px 0 var(--ink);
-  padding:10px 13px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:48px;
-}
-.compound-card,.ion{cursor:pointer;transition:transform .14s ease,box-shadow .14s ease,background .14s ease}
-.compound-card:hover,.ion:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);background:#fff3e3}
-.compound-card.is-ionized{background:#dcf2ff}
-.ion.cancelled{background:#f3e2cf;text-decoration:line-through;opacity:.55;transform:scale(.96);box-shadow:2px 2px 0 var(--ink)}
-select{
-  border:var(--border-thin);
-  border-radius:14px;
-  background:#fff;
-  color:var(--ink);
-  padding:10px 12px;
-  font-weight:950;
-  min-height:48px;
-  box-shadow:4px 4px 0 var(--ink);
-  cursor:pointer;
-}
-.hint{
-  display:none;
-  background:#ffe0dd;
-  border:var(--border-thin);
-  border-radius:var(--radius-sm);
-  box-shadow:var(--shadow-sm);
-  padding:14px 16px;
-  margin:16px 0 0;
-  color:var(--ink);
-  font-weight:900;
-}
-.simplification-note{
-  display:none;
-  background:#dfffe9;
-  border:var(--border-thin);
-  border-radius:var(--radius-sm);
-  box-shadow:var(--shadow-sm);
-  padding:14px 16px;
-  margin-top:16px;
-  font-weight:900;
-}
-.final-title{color:var(--green);text-align:center;font-size:2.4rem!important}
-#net-result{border-color:var(--green);background:#e9ffe9;color:var(--ink)}
-.hidden{display:none!important}
-.pulse{animation:pulse .45s ease}
-@keyframes popIn{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes pulse{0%{transform:scale(1)}45%{transform:scale(1.025)}100%{transform:scale(1)}}
-@media(max-width:1200px){.menu-grid{grid-template-columns:repeat(3,1fr)}.game-grid{grid-template-columns:280px 1fr}.equation-box{font-size:1.28rem}.controls-panel{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){body{padding:12px}.top-grid,.game-grid{grid-template-columns:1fr}.sidebar{position:static}.hero{min-height:auto}.controls-panel{min-height:auto}.menu-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.hero{grid-template-columns:1fr;text-align:center;justify-items:center;padding:20px}.controls-panel{grid-template-columns:1fr}.menu-grid{grid-template-columns:1fr}.equation-box{justify-content:flex-start;flex-wrap:nowrap;font-size:1.15rem}.step h3{font-size:1.45rem}.btn{width:100%}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-</style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ionic Equation Masterclass</title>
+    <style>
+    :root {
+        --cream: #f7f1e8;
+        --cream-2: #fff8ee;
+        --card: #fffaf2;
+        --ink: #111111;
+        --orange: #ff6b00;
+        --orange-2: #ff8a2a;
+        --green: #1fbf61;
+        --red: #ef3b2d;
+        --yellow: #ffd23f;
+        --blue: #3da5ff;
+        --muted: #665d52;
+        --border: 4px solid var(--ink);
+        --border-thin: 3px solid var(--ink);
+        --shadow: 8px 8px 0 var(--ink);
+        --shadow-sm: 5px 5px 0 var(--ink);
+        --radius: 22px;
+        --radius-sm: 16px;
+        --gap: 16px;
+    }
+
+    * {
+        box-sizing: border-box
+    }
+
+    html, body {
+        height: 100%
+    }
+
+    body {
+        margin: 0;
+        font-family: Inter, ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+        line-height: 1.35;
+        padding: 18px;
+    }
+
+    button, select {
+        font: inherit
+    }
+
+    .app {
+        max-width: 1500px;
+        margin: 0 auto;
+        display: grid;
+        gap: var(--gap);
+    }
+
+    .top-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--gap);
+        align-items: stretch;
+    }
+
+    .hero, .controls-panel, .panel {
+        background: var(--card);
+        border: var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+
+    .hero {
+        padding: 26px 28px;
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 22px;
+        align-items: center;
+        min-height: 190px;
+    }
+
+    .badge-icon {
+        width: 82px;
+        height: 82px;
+        border: var(--border);
+        border-radius: 26px;
+        background: var(--orange);
+        box-shadow: var(--shadow-sm);
+        display: grid;
+        place-items: center;
+        font-size: 2.4rem;
+        transform: rotate(-2deg);
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 4vw, 4.6rem);
+        line-height: .94;
+        letter-spacing: -.07em;
+        font-weight: 950;
+    }
+
+    .byline {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 1.15rem;
+        font-weight: 900;
+    }
+
+    .controls-panel {
+        padding: 24px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        align-content: start;
+        min-height: 190px;
+    }
+
+    .btn {
+        border: var(--border-thin);
+        border-radius: 18px;
+        background: #f3e2cf;
+        color: var(--ink);
+        padding: 16px 18px;
+        min-height: 76px;
+        font-weight: 950;
+        font-size: 1.05rem;
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0 var(--ink)
+    }
+
+    .btn:active {
+        transform: translate(4px, 4px);
+        box-shadow: 1px 1px 0 var(--ink)
+    }
+
+    .btn-primary {
+        background: var(--orange);
+        color: var(--ink)
+    }
+
+    .btn-dark {
+        background: var(--ink);
+        color: #fff
+    }
+
+    .btn-green {
+        background: var(--green);
+        color: var(--ink)
+    }
+
+    .btn-blue {
+        background: var(--blue);
+        color: var(--ink)
+    }
+
+    .btn-small {
+        min-height: 54px;
+        padding: 10px 16px;
+        font-size: .98rem;
+        border-radius: 14px
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(180px, 1fr));
+        gap: var(--gap);
+        align-items: stretch;
+    }
+
+    .level-card {
+        background: var(--card);
+        border: var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
+        padding: 18px;
+        cursor: pointer;
+        transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+        min-height: 210px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .level-card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0 var(--ink);
+        background: #fff3e3
+    }
+
+    .level-card.completed {
+        background: #e9ffe9
+    }
+
+    .level-kicker {
+        display: inline-flex;
+        width: max-content;
+        background: var(--orange);
+        border: var(--border-thin);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 950;
+        margin-bottom: 12px;
+    }
+
+    .level-card h3 {
+        margin: 0 0 8px;
+        font-size: 1.3rem;
+        line-height: 1.05;
+        font-weight: 950;
+        letter-spacing: -.04em
+    }
+
+    .level-card p {
+        margin: 0;
+        color: var(--muted);
+        font-weight: 750;
+        font-size: .95rem
+    }
+
+    .score-display {
+        margin-top: 14px;
+        font-weight: 950;
+        color: var(--ink)
+    }
+
+    .star-rating {
+        display: inline-flex;
+        gap: 2px;
+        color: var(--orange);
+        font-size: 1.35rem;
+        -webkit-text-stroke: 1px var(--ink);
+        paint-order: stroke fill
+    }
+
+    .game-grid {
+        display: grid;
+        grid-template-columns: 330px 1fr;
+        gap: var(--gap);
+        align-items: start;
+    }
+
+    .sidebar {
+        background: var(--card);
+        border: var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        position: sticky;
+        top: 16px;
+    }
+
+    .reaction-chip {
+        background: var(--orange);
+        border: var(--border-thin);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-weight: 950;
+        display: inline-flex;
+        margin-bottom: 12px;
+    }
+
+    .sidebar h2 {
+        margin: 0 0 10px;
+        font-size: 2.1rem;
+        line-height: 1;
+        letter-spacing: -.06em;
+        font-weight: 950
+    }
+
+    .sidebar p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-weight: 800
+    }
+
+    .progress-list {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0
+    }
+
+    .progress-item {
+        border: var(--border-thin);
+        border-radius: 14px;
+        padding: 12px;
+        background: #f3e2cf;
+        font-weight: 950;
+        box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .progress-item.active {
+        background: var(--orange)
+    }
+
+    .progress-item.done {
+        background: #dfffe9
+    }
+
+    .panel {
+        padding: 22px;
+        margin-bottom: var(--gap);
+        transition: transform .25s ease, opacity .25s ease
+    }
+
+    .step {
+        display: none;
+        opacity: 0;
+        transform: translateY(8px)
+    }
+
+    .step.active {
+        display: block;
+        animation: popIn .22s ease forwards
+    }
+
+    .step.completed {
+        display: block;
+        opacity: .85;
+        background: #fffdf8;
+        border-color: var(--green);
+        pointer-events: none
+    }
+
+    .step.completed .btn-primary, .step.completed select {
+        display: none
+    }
+
+    .step h3 {
+        margin: 0 0 6px;
+        font-size: 1.8rem;
+        letter-spacing: -.04em;
+        font-weight: 950
+    }
+
+    .step p {
+        margin: 0 0 12px;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--muted)
+    }
+
+    .progress-bar {
+        background: var(--yellow);
+        border: var(--border);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
+        padding: 14px 16px;
+        font-weight: 950;
+        font-size: 1.1rem;
+        margin-bottom: var(--gap);
+        text-align: center;
+    }
+
+    .equation-box {
+        border: var(--border);
+        border-radius: var(--radius-sm);
+        box-shadow: inset 4px 4px 0 rgba(0, 0, 0, .08);
+        background: var(--cream-2);
+        padding: 18px;
+        min-height: 96px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.45rem;
+        font-weight: 950;
+        line-height: 1.05;
+        overflow-x: auto;
+    }
+
+    .chem-part, .compound-card, .ion {
+        background: #fff;
+        border: var(--border-thin);
+        border-radius: 14px;
+        box-shadow: 4px 4px 0 var(--ink);
+        padding: 10px 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+    }
+
+    .compound-card, .ion {
+        cursor: pointer;
+        transition: transform .14s ease, box-shadow .14s ease, background .14s ease
+    }
+
+    .compound-card:hover, .ion:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+        background: #fff3e3
+    }
+
+    .compound-card.is-ionized {
+        background: #dcf2ff
+    }
+
+    .ion.cancelled {
+        background: #f3e2cf;
+        text-decoration: line-through;
+        opacity: .55;
+        transform: scale(.96);
+        box-shadow: 2px 2px 0 var(--ink)
+    }
+
+    select {
+        border: var(--border-thin);
+        border-radius: 14px;
+        background: #fff;
+        color: var(--ink);
+        padding: 10px 12px;
+        font-weight: 950;
+        min-height: 48px;
+        box-shadow: 4px 4px 0 var(--ink);
+        cursor: pointer;
+    }
+
+    .hint {
+        display: none;
+        background: #ffe0dd;
+        border: var(--border-thin);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
+        padding: 14px 16px;
+        margin: 16px 0 0;
+        color: var(--ink);
+        font-weight: 900;
+    }
+
+    .simplification-note {
+        display: none;
+        background: #dfffe9;
+        border: var(--border-thin);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
+        padding: 14px 16px;
+        margin-top: 16px;
+        font-weight: 900;
+    }
+
+    .final-title {
+        color: var(--green);
+        text-align: center;
+        font-size: 2.4rem !important
+    }
+
+    #net-result {
+        border-color: var(--green);
+        background: #e9ffe9;
+        color: var(--ink)
+    }
+
+    .hidden {
+        display: none !important
+    }
+
+    .pulse {
+        animation: pulse .45s ease
+    }
+
+    @keyframes popIn {
+        from {
+            opacity: 0;
+            transform:translateY(12px) scale(.99)
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1)
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform:scale(1)
+        }
+
+        45% {
+            transform:scale(1.025)
+        }
+
+        100% {
+            transform: scale(1)
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .menu-grid {
+            grid-template-columns:repeat(3, 1fr)
+        }
+
+        .game-grid {
+            grid-template-columns:280px 1fr
+        }
+
+        .equation-box {
+            font-size:1.28rem
+        }
+
+        .controls-panel {
+            grid-template-columns: repeat(2, 1fr)
+        }
+    }
+
+    @media (max-width: 900px) {
+        body {
+            padding:12px
+        }
+
+        .top-grid, .game-grid {
+            grid-template-columns:1fr
+        }
+
+        .sidebar {
+            position:static
+        }
+
+        .hero {
+            min-height:auto
+        }
+
+        .controls-panel {
+            min-height:auto
+        }
+
+        .menu-grid {
+            grid-template-columns: repeat(2, 1fr)
+        }
+    }
+
+    @media (max-width: 640px) {
+        .hero {
+            grid-template-columns: 1fr;
+            text-align: center;
+            justify-items: center;
+            padding:20px
+        }
+
+        .controls-panel {
+            grid-template-columns:1fr
+        }
+
+        .menu-grid {
+            grid-template-columns:1fr
+        }
+
+        .equation-box {
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            font-size:1.15rem
+        }
+
+        .step h3 {
+            font-size:1.45rem
+        }
+
+        .btn {
+            width: 100%
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation: none !important;
+            transition: none !important
+        }
+    }
+    </style>
 </head>
 <body>
-<main class="app">
-  <section class="top-grid">
-    <div class="hero">
-      <div class="badge-icon" id="hero-icon">🧪</div>
-      <div>
-        <h1 id="main-heading">Writing Ionic Equations</h1>
-        <p class="byline">Created by Mr. Jansen Tan</p>
-      </div>
-    </div>
-    <div class="controls-panel">
-      <button class="btn" onclick="toggleSound()"><span id="sound-icon">🔊</span><span id="sound-text">Sound On</span></button>
-      <button class="btn btn-dark" onclick="goHome()">🏠 Menu</button>
-      <button class="btn btn-primary" onclick="openNewTab()">↗️ Open in New Tab</button>
-    </div>
-  </section>
+    <main class="app">
+        <section class="top-grid">
+            <div class="hero">
+                <div class="badge-icon" id="hero-icon">🧪</div>
+                <div>
+                    <h1 id="main-heading">Writing Ionic Equations</h1>
+                    <p class="byline">Created by Mr. Jansen Tan</p>
+                </div>
+            </div>
+            <div class="controls-panel">
+                <button class="btn" onclick="toggleSound()">
+                    <span id="sound-icon">🔊</span>
+                    <span id="sound-text">Sound On</span>
+                </button>
+                <button class="btn btn-dark" onclick="goHome()">🏠 Menu</button>
+                <button class="btn btn-primary" onclick="openNewTab()">↗️ Open in New Tab</button>
+            </div>
+        </section>
 
-  <section id="setup-screen" class="panel">
-    <div class="progress-bar">Choose a reaction type</div>
-    <div class="menu-grid" id="level-list"></div>
-  </section>
+        <section id="setup-screen" class="panel">
+            <div class="progress-bar">Choose a reaction type</div>
+            <div class="menu-grid" id="level-list"></div>
+        </section>
 
-  <section id="game-screen" class="hidden">
-    <div class="game-grid">
-      <aside class="sidebar">
-        <span class="reaction-chip" id="reaction-chip">Q1</span>
-        <h2 id="reaction-title">Loading...</h2>
-        <p id="reaction-desc-side"></p>
-        <div class="progress-list">
-          <div class="progress-item" id="pi1">1. State Symbols</div>
-          <div class="progress-item" id="pi2">2. Ionisation</div>
-          <div class="progress-item" id="pi3">3. Cancel Spectators</div>
-          <div class="progress-item" id="pifinal">4. Net Ionic Equation</div>
-        </div>
-        <button class="btn btn-small" onclick="goHome()">✕ Return to Menu</button>
-      </aside>
-      <div>
-        <div id="progress" class="progress-bar">Step 1: State Symbols</div>
+        <section id="game-screen" class="hidden">
+            <div class="game-grid">
+                <aside class="sidebar">
+                    <span class="reaction-chip" id="reaction-chip">Q1</span>
+                    <h2 id="reaction-title">Loading...</h2>
+                    <p id="reaction-desc-side"></p>
+                    <div class="progress-list">
+                        <div class="progress-item" id="pi1">1. State Symbols</div>
+                        <div class="progress-item" id="pi2">2. Ionisation</div>
+                        <div class="progress-item" id="pi3">3. Cancel Spectators</div>
+                        <div class="progress-item" id="pifinal">4. Net Ionic Equation</div>
+                    </div>
+                    <button class="btn btn-small" onclick="goHome()">✕ Return to Menu</button>
+                </aside>
+                <div>
+                    <div id="progress" class="progress-bar">Step 1: State Symbols</div>
 
-        <div id="step1" class="step panel">
-          <h3>Molecular Equation & States</h3>
-          <p id="step1-desc"></p>
-          <div id="s1-equation" class="equation-box"></div>
-          <div id="hint1" class="hint"></div>
-          <button class="btn btn-primary" onclick="checkStep1()">Verify States</button>
-        </div>
+                    <div id="step1" class="step panel">
+                        <h3>Molecular Equation & States</h3>
+                        <p id="step1-desc"></p>
+                        <div id="s1-equation" class="equation-box"></div>
+                        <div id="hint1" class="hint"></div>
+                        <button class="btn btn-primary" onclick="checkStep1()">Verify States</button>
+                    </div>
 
-        <div id="step2" class="step panel">
-          <h3>Full Ionic Equation</h3>
-          <p>Click on <b>(aq)</b> compounds to split them into their ions.</p>
-          <div id="ion-zone" class="equation-box"></div>
-          <div id="hint2" class="hint"></div>
-          <button class="btn btn-primary" onclick="checkStep2()">Verify Dissociation</button>
-        </div>
+                    <div id="step2" class="step panel">
+                        <h3>Full Ionic Equation</h3>
+                        <p>
+                            Click on 
+                            <b>(aq)</b>
+                             compounds to split them into their ions.
+                        </p>
+                        <div id="ion-zone" class="equation-box"></div>
+                        <div id="hint2" class="hint"></div>
+                        <button class="btn btn-primary" onclick="checkStep2()">Verify Dissociation</button>
+                    </div>
 
-        <div id="step3" class="step panel">
-          <h3>Spectator Ion Removal</h3>
-          <p>Click matching ions found on both sides of the equation to cancel them.</p>
-          <div id="cancel-zone" class="equation-box"></div>
-          <div id="hint3" class="hint"></div>
-          <button class="btn btn-primary" onclick="checkStep3()">Check Final Equation</button>
-        </div>
+                    <div id="step3" class="step panel">
+                        <h3>Spectator Ion Removal</h3>
+                        <p>Click matching ions found on both sides of the equation to cancel them.</p>
+                        <div id="cancel-zone" class="equation-box"></div>
+                        <div id="hint3" class="hint"></div>
+                        <button class="btn btn-primary" onclick="checkStep3()">Check Final Equation</button>
+                    </div>
 
-        <div id="final" class="step panel">
-          <h3 class="final-title">Lab Complete!</h3>
-          <div id="final-star-display" style="text-align:center;margin-bottom:18px;"></div>
-          <p>The full ionic equation reduces to:</p>
-          <div id="net-result" class="equation-box"></div>
-          <div id="simplification-box" class="simplification-note"></div>
-          <button class="btn btn-green" onclick="goHome()">Choose New Reaction</button>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-<script>
-let audioCtx;
-let soundEnabled=true;
-function initAudio(){if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)()} if(audioCtx.state==='suspended') audioCtx.resume()}
-function toggleSound(){soundEnabled=!soundEnabled;document.getElementById('sound-icon').innerText=soundEnabled?'🔊':'🔇';document.getElementById('sound-text').innerText=soundEnabled?'Sound On':'Sound Off'}
-function playTone(freq,type,duration,volume=.1){if(!soundEnabled)return;initAudio();const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,audioCtx.currentTime);gain.gain.setValueAtTime(volume,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration);osc.connect(gain);gain.connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+duration)}
-const soundEffects={ding:()=>{playTone(880,'sine',.5);setTimeout(()=>playTone(1109,'sine',.5),100)},dun:()=>{playTone(220,'triangle',.6,.2);setTimeout(()=>playTone(164,'triangle',.8,.2),150)},fanfare:()=>{[523.25,659.25,783.99,1046.50].forEach((note,i)=>setTimeout(()=>playTone(note,'sawtooth',.6,.05),i*150))}};
-function openNewTab(){window.open(window.location.href,'_blank','noopener')}
-function formatChem(str){if(!str)return'';const subs={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};const sups={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','-':'⁻','−':'⁻'};let formatted=str.replace(/\^([\d\+\-−]+)/g,(m,p1)=>p1.split('').map(c=>sups[c]||c).join(''));let result='';for(let i=0;i<formatted.length;i++){let char=formatted[i];let isSup=Object.values(sups).includes(char);if(/\d/.test(char)&&!isSup){if(i>0&&/[A-Za-z\)]/.test(formatted[i-1]))result+=subs[char];else result+=char}else result+=char}let finalOutput='';for(let i=0;i<result.length;i++){let char=result[i];if(char==='+'&&i>0&&/[A-Za-z\d\)]/.test(result[i-1])){let isOperator=(i>0&&result[i-1]===' ')||(i<result.length-1&&result[i+1]===' ');finalOutput+=isOperator?'+':'⁺'}else if(char==='-'&&i>0&&/[A-Za-z\d\)]/.test(result[i-1])){let isOperator=(i>0&&result[i-1]===' ')||(i<result.length-1&&result[i+1]===' ');finalOutput+=isOperator?'-':'⁻'}else finalOutput+=char}return finalOutput}
-function renderStars(score){let html='<div class="star-rating" aria-label="'+score+' out of 3 stars">';for(let i=1;i<=3;i++){if(score>=i)html+='★';else if(score>=i-.5)html+='½';else html+='☆'}html+='</div>';return html}
-const problems=[{id:0,type:'Q1: Precipitation',title:'Reaction between aqueous silver nitrate and aqueous sodium chloride',desc:'aqueous silver nitrate + aqueous sodium chloride',states:['(aq)','(aq)','(s)','(aq)'],ionizable:[true,true,false,true],hint1:'Silver chloride is an insoluble white precipitate (s).',molecules:[{label:'AgNO3',ions:'Ag^+(aq) + NO3^-(aq)'},{label:'NaCl',ions:'Na^+(aq) + Cl^-(aq)'},{label:'AgCl',ions:'AgCl(s)'},{label:'NaNO3',ions:'Na^+(aq) + NO3^-(aq)'}],flow:[{t:'Ag^+(aq)',id:0},{t:'NO3^-(aq)',id:1},{t:'+',type:'sep'},{t:'Na^+(aq)',id:2},{t:'Cl^-(aq)',id:3},{t:'→',type:'sep'},{t:'AgCl(s)',id:4},{t:'+',type:'sep'},{t:'Na^+(aq)',id:5},{t:'NO3^-(aq)',id:6}],spectators:[1,2,5,6],net:'Ag^+(aq) + Cl^-(aq) → AgCl(s)'},{id:1,type:'Q2: Acid + Metal',title:'Reaction of iron with dilute sulfuric acid',desc:'iron + dilute sulfuric acid',states:['(s)','(aq)','(aq)','(g)'],ionizable:[false,true,true,false],hint1:'Pure iron is a solid (s). Hydrogen is a gas (g).',molecules:[{label:'Fe',ions:'Fe(s)'},{label:'H2SO4',ions:'2H^+(aq) + SO4^2-(aq)'},{label:'FeSO4',ions:'Fe^2+(aq) + SO4^2-(aq)'},{label:'H2',ions:'H2(g)'}],flow:[{t:'Fe(s)',id:0},{t:'+',type:'sep'},{t:'2H^+(aq)',id:1},{t:'SO4^2-(aq)',id:2},{t:'→',type:'sep'},{t:'Fe^2+(aq)',id:3},{t:'SO4^2-(aq)',id:4},{t:'+',type:'sep'},{t:'H2(g)',id:5}],spectators:[2,4],net:'Fe(s) + 2H^+(aq) → Fe^2+(aq) + H2(g)'},{id:2,type:'Q3: Acid + Base / Alkali',title:'Reaction of dilute hydrochloric acid with aqueous barium hydroxide',desc:'dilute hydrochloric acid + aqueous barium hydroxide',states:['(aq)','(aq)','(aq)','(l)'],ionizable:[true,true,true,false],hint1:'Water is a liquid (l). All others are aqueous (aq).',molecules:[{label:'2HCl',ions:'2H^+(aq) + 2Cl^-(aq)'},{label:'Ba(OH)2',ions:'Ba^2+(aq) + 2OH^-(aq)'},{label:'BaCl2',ions:'Ba^2+(aq) + 2Cl^-(aq)'},{label:'2H2O',ions:'2H2O(l)'}],flow:[{t:'2H^+(aq)',id:0},{t:'2Cl^-(aq)',id:1},{t:'+',type:'sep'},{t:'Ba^2+(aq)',id:2},{t:'2OH^-(aq)',id:3},{t:'→',type:'sep'},{t:'Ba^2+(aq)',id:4},{t:'2Cl^-(aq)',id:5},{t:'+',type:'sep'},{t:'2H2O(l)',id:6}],spectators:[1,2,4,5],net:'H^+(aq) + OH^-(aq) → H2O(l)',simplification:'Simplified: <b>H⁺(aq) + OH⁻(aq) → H₂O(l)</b>'},{id:3,type:'Q4: Acid + Carbonate',title:'Reaction of aqueous potassium carbonate with dilute hydrochloric acid',desc:'aqueous potassium carbonate + dilute hydrochloric acid',states:['(aq)','(aq)','(aq)','(g)','(l)'],ionizable:[true,true,true,false,false],hint1:'CO2 is a gas (g) and H2O is a liquid (l).',molecules:[{label:'K2CO3',ions:'2K^+(aq) + CO3^2-(aq)'},{label:'2HCl',ions:'2H^+(aq) + 2Cl^-(aq)'},{label:'2KCl',ions:'2K^+(aq) + 2Cl^-(aq)'},{label:'CO2',ions:'CO2(g)'},{label:'H2O',ions:'H2O(l)'}],flow:[{t:'2K^+(aq)',id:0},{t:'CO3^2-(aq)',id:1},{t:'+',type:'sep'},{t:'2H^+(aq)',id:2},{t:'2Cl^-(aq)',id:3},{t:'→',type:'sep'},{t:'2K^+(aq)',id:4},{t:'2Cl^-(aq)',id:5},{t:'+',type:'sep'},{t:'CO2(g)',id:6},{t:'+',type:'sep'},{t:'H2O(l)',id:7}],spectators:[0,3,4,5],net:'CO3^2-(aq) + 2H^+(aq) → CO2(g) + H2O(l)'},{id:4,type:'Q5: Alkali + Ammonium salt',title:'Reaction of aqueous ammonium nitrate with aqueous sodium hydroxide',desc:'aqueous ammonium nitrate + aqueous sodium hydroxide',states:['(aq)','(aq)','(aq)','(g)','(l)'],ionizable:[true,true,true,false,false],hint1:'Ammonia (NH3) is a gas (g). Water is a liquid (l).',molecules:[{label:'NH4NO3',ions:'NH4^+(aq) + NO3^-(aq)'},{label:'NaOH',ions:'Na^+(aq) + OH^-(aq)'},{label:'NaNO3',ions:'Na^+(aq) + NO3^-(aq)'},{label:'NH3',ions:'NH3(g)'},{label:'H2O',ions:'H2O(l)'}],flow:[{t:'NH4^+(aq)',id:0},{t:'NO3^-(aq)',id:1},{t:'+',type:'sep'},{t:'Na^+(aq)',id:2},{t:'OH^-(aq)',id:3},{t:'→',type:'sep'},{t:'Na^+(aq)',id:4},{t:'NO3^-(aq)',id:5},{t:'+',type:'sep'},{t:'NH3(g)',id:6},{t:'+',type:'sep'},{t:'H2O(l)',id:7}],spectators:[1,2,4,5],net:'NH4^+(aq) + OH^-(aq) → NH3(g) + H2O(l)'}];
-let currentProb=null,ionizedState=[],cancelledSet=new Set(),scores={},currentMistakes=[false,false,false];
-function renderSelectionScreen(){const levelList=document.getElementById('level-list');levelList.innerHTML='';problems.forEach((p,index)=>{const score=scores[p.id]||0;const btn=document.createElement('div');btn.className=`level-card ${score===3?'completed':''}`;btn.setAttribute('role','button');btn.setAttribute('tabindex','0');btn.innerHTML=`<div><span class="level-kicker">${p.type.split(':')[0]}</span><h3>${p.type.replace(/^Q\d+: /,'')}</h3><p>${p.title}</p><p style="margin-top:8px;">${formatChem(p.desc)}</p></div>${score>0?`<div class="score-display">${renderStars(score)} ${score}/3 Stars</div>`:'<div class="score-display">Start ▶</div>'}`;btn.onclick=()=>startLevel(index);btn.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startLevel(index)}};levelList.appendChild(btn)})}
-function startLevel(index){initAudio();currentProb=problems[index];ionizedState=new Array(currentProb.molecules.length).fill(false);cancelledSet.clear();currentMistakes=[false,false,false];document.getElementById('setup-screen').classList.add('hidden');document.getElementById('game-screen').classList.remove('hidden');document.getElementById('main-heading').innerText='Writing Ionic Equations';document.getElementById('reaction-chip').innerText=currentProb.type.split(':')[0];document.getElementById('reaction-title').innerText=currentProb.type.replace(/^Q\d+: /,'');document.getElementById('reaction-desc-side').innerText=currentProb.title;document.getElementById('step1-desc').innerText=formatChem(currentProb.desc);document.querySelectorAll('.step').forEach(s=>{s.style.display='none';s.classList.remove('active','completed','pulse')});setupStep1();nextStep(1)}
-function setupStep1(){const zone=document.getElementById('s1-equation');let html='';currentProb.molecules.forEach((m,i)=>{html+=`<span class="chem-part">${formatChem(m.label)}</span><select id="s1_${i}" aria-label="State symbol for ${m.label}"><option value="">?</option><option>(s)</option><option>(l)</option><option>(g)</option><option>(aq)</option></select>`;const arrowPos=currentProb.molecules.length>4?2:Math.floor(currentProb.molecules.length/2);if(i===arrowPos-1)html+='<span>→</span>';else if(i!==currentProb.molecules.length-1)html+='<span>+</span>'});zone.innerHTML=html}
-function checkStep1(){const h='hint1';document.getElementById(h).style.display='none';const userStates=currentProb.molecules.map((_,i)=>document.getElementById(`s1_${i}`).value);if(userStates.includes('')){currentMistakes[0]=true;showHint(h,'Please select all state symbols.');soundEffects.dun();return}if(userStates.every((s,i)=>s===currentProb.states[i])){soundEffects.ding();renderStep2();nextStep(2)}else{currentMistakes[0]=true;showHint(h,currentProb.hint1);soundEffects.dun()}}
-function renderStep2(){const zone=document.getElementById('ion-zone');zone.innerHTML=currentProb.molecules.map((m,i)=>{let labelWithState=m.label+currentProb.states[i];let content=ionizedState[i]?m.ions:labelWithState;let html=`<div class="compound-card ${ionizedState[i]?'is-ionized':''}" onclick="toggleIonize(${i})" role="button" tabindex="0">${formatChem(content)}</div>`;const arrowPos=currentProb.molecules.length>4?2:Math.floor(currentProb.molecules.length/2);if(i===arrowPos-1)html+='<span>→</span>';else if(i!==currentProb.molecules.length-1)html+='<span>+</span>';return html}).join('')}
-function toggleIonize(index){document.getElementById('hint2').style.display='none';if(!currentProb.ionizable[index]){currentMistakes[1]=true;showHint('hint2','Solids (s), liquids (l), and gases (g) do not dissociate into ions.');soundEffects.dun();return}ionizedState[index]=!ionizedState[index];renderStep2()}
-function checkStep2(){if(ionizedState.every((val,i)=>val===currentProb.ionizable[i])){soundEffects.ding();renderStep3();nextStep(3)}else{currentMistakes[1]=true;showHint('hint2','Please dissociate all aqueous (aq) compounds.');soundEffects.dun()}}
-function renderStep3(){const zone=document.getElementById('cancel-zone');zone.innerHTML=currentProb.flow.map(item=>{if(item.type==='sep')return `<span>${item.t}</span>`;const isCancelled=cancelledSet.has(item.id);return `<div class="ion ${isCancelled?'cancelled':''}" onclick="toggleCancel(${item.id})" role="button" tabindex="0">${formatChem(item.t)}</div>`}).join('')}
-function toggleCancel(id){if(cancelledSet.has(id))cancelledSet.delete(id);else cancelledSet.add(id);renderStep3()}
-function checkStep3(){const userChosen=Array.from(cancelledSet);const missed=currentProb.spectators.some(s=>!userChosen.includes(s));const wrong=userChosen.some(u=>!currentProb.spectators.includes(u));if(!missed&&!wrong){calculateFinalScore();nextStep('final')}else{currentMistakes[2]=true;showHint('hint3',wrong?'Error: You cancelled an ion that changed state or charge.':'Keep going. Some spectator ions remain on both sides.');soundEffects.dun()}}
-function calculateFinalScore(){let finalScore=0;currentMistakes.forEach(m=>{finalScore+=m?.5:1});if(!scores[currentProb.id]||finalScore>scores[currentProb.id])scores[currentProb.id]=finalScore;if(finalScore>=2.5)soundEffects.fanfare();else soundEffects.ding();document.getElementById('final-star-display').innerHTML=`<div style="font-size:1.25rem;font-weight:950;margin-bottom:6px;">Investigation Rating</div>${renderStars(finalScore)}<div style="font-weight:950;margin-top:4px;">${finalScore} / 3 Stars</div>`;document.getElementById('net-result').innerHTML=formatChem(currentProb.net);const simBox=document.getElementById('simplification-box');if(currentProb.simplification){simBox.innerHTML=currentProb.simplification;simBox.style.display='block'}else simBox.style.display='none'}
-function showHint(id,msg){const el=document.getElementById(id);el.innerText=msg;el.style.display='block';el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse')}
-function nextStep(n){['pi1','pi2','pi3','pifinal'].forEach(id=>document.getElementById(id).className='progress-item');if(typeof n==='number'){if(n>1){const prev=document.getElementById('step'+(n-1));prev.classList.remove('active');prev.classList.add('completed')}const current=document.getElementById('step'+n);current.style.display='block';setTimeout(()=>current.classList.add('active','pulse'),10);const titles=['','Step 1: State Symbols','Step 2: Ionisation','Step 3: Spectator Ions'];document.getElementById('progress').innerText=titles[n];for(let i=1;i<n;i++)document.getElementById('pi'+i).classList.add('done');document.getElementById('pi'+n).classList.add('active')}else if(n==='final'){document.getElementById('step3').classList.remove('active');document.getElementById('step3').classList.add('completed');const final=document.getElementById('final');final.style.display='block';setTimeout(()=>final.classList.add('active','pulse'),10);document.getElementById('progress').innerText='Investigation Complete';['pi1','pi2','pi3'].forEach(id=>document.getElementById(id).classList.add('done'));document.getElementById('pifinal').classList.add('active')}}
-function goHome(){document.getElementById('game-screen').classList.add('hidden');document.getElementById('setup-screen').classList.remove('hidden');document.getElementById('main-heading').innerText='Writing Ionic Equations';renderSelectionScreen()}
-renderSelectionScreen();
-</script>
+                    <div id="final" class="step panel">
+                        <h3 class="final-title">Lab Complete!</h3>
+                        <div id="final-star-display" style="text-align:center;margin-bottom:18px;"></div>
+                        <p>The full ionic equation reduces to:</p>
+                        <div id="net-result" class="equation-box"></div>
+                        <div id="simplification-box" class="simplification-note"></div>
+                        <button class="btn btn-green" onclick="goHome()">Choose New Reaction</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+    let audioCtx;
+    let soundEnabled = true;
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+        }
+        if (audioCtx.state === 'suspended')
+            audioCtx.resume()
+    }
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        document.getElementById('sound-icon').innerText = soundEnabled ? '🔊' : '🔇';
+        document.getElementById('sound-text').innerText = soundEnabled ? 'Sound On' : 'Sound Off'
+    }
+    function playTone(freq, type, duration, volume=.1) {
+        if (!soundEnabled)
+            return;
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration)
+    }
+    const soundEffects = {
+        ding: () => {
+            playTone(880, 'sine', .5);
+            setTimeout(() => playTone(1109, 'sine', .5), 100)
+        },
+        dun: () => {
+            playTone(220, 'triangle', .6, .2);
+            setTimeout(() => playTone(164, 'triangle', .8, .2), 150)
+        },
+        fanfare: () => {
+            [523.25, 659.25, 783.99, 1046.50].forEach((note, i) => setTimeout(() => playTone(note, 'sawtooth', .6, .05), i * 150))
+        }
+    };
+    function openNewTab() {
+        window.open(window.location.href, '_blank', 'noopener')
+    }
+    function formatChem(str) {
+        if (!str)
+            return '';
+        const subs = {
+            '0': '₀',
+            '1': '₁',
+            '2': '₂',
+            '3': '₃',
+            '4': '₄',
+            '5': '₅',
+            '6': '₆',
+            '7': '₇',
+            '8': '₈',
+            '9': '₉'
+        };
+        const sups = {
+            '0': '⁰',
+            '1': '¹',
+            '2': '²',
+            '3': '³',
+            '4': '⁴',
+            '5': '⁵',
+            '6': '⁶',
+            '7': '⁷',
+            '8': '⁸',
+            '9': '⁹',
+            '+': '⁺',
+            '-': '⁻',
+            '−': '⁻'
+        };
+        let formatted = str.replace(/\^([\d\+\-−]+)/g, (m, p1) => p1.split('').map(c => sups[c] || c).join(''));
+        let result = '';
+        for (let i = 0; i < formatted.length; i++) {
+            let char = formatted[i];
+            let isSup = Object.values(sups).includes(char);
+            if (/\d/.test(char) && !isSup) {
+                if (i > 0 && /[A-Za-z\)]/.test(formatted[i - 1]))
+                    result += subs[char];
+                else
+                    result += char
+            } else
+                result += char
+        }
+        let finalOutput = '';
+        for (let i = 0; i < result.length; i++) {
+            let char = result[i];
+            if (char === '+' && i > 0 && /[A-Za-z\d\)]/.test(result[i - 1])) {
+                let isOperator = (i > 0 && result[i - 1] === ' ') || (i < result.length - 1 && result[i + 1] === ' ');
+                finalOutput += isOperator ? '+' : '⁺'
+            } else if (char === '-' && i > 0 && /[A-Za-z\d\)]/.test(result[i - 1])) {
+                let isOperator = (i > 0 && result[i - 1] === ' ') || (i < result.length - 1 && result[i + 1] === ' ');
+                finalOutput += isOperator ? '-' : '⁻'
+            } else
+                finalOutput += char
+        }
+        return finalOutput
+    }
+    function renderStars(score) {
+        let html = '<div class="star-rating" aria-label="' + score + ' out of 3 stars">';
+        for (let i = 1; i <= 3; i++) {
+            if (score >= i)
+                html += '★';
+            else if (score >= i - .5)
+                html += '½';
+            else
+                html += '☆'
+        }
+        html += '</div>';
+        return html
+    }
+    const problems = [{
+        "id": 0,
+        "type": "Q1: Acid + Base / Alkali",
+        "title": "Reaction of sulfuric acid with aqueous sodium hydroxide",
+        "desc": "sulfuric acid + sodium hydroxide",
+        "states": ["(aq)", "(aq)", "(aq)", "(l)"],
+        "ionizable": [true, true, true, false],
+        "hint1": "Water is a liquid (l). All other substances are aqueous (aq).",
+        "molecules": [{
+            "label": "H2SO4",
+            "ions": "2H^+(aq) + SO4^2-(aq)"
+        }, {
+            "label": "2NaOH",
+            "ions": "2Na^+(aq) + 2OH^-(aq)"
+        }, {
+            "label": "Na2SO4",
+            "ions": "2Na^+(aq) + SO4^2-(aq)"
+        }, {
+            "label": "2H2O",
+            "ions": "2H2O(l)"
+        }],
+        "flow": [{
+            "t": "2H^+(aq)",
+            "id": 0
+        }, {
+            "t": "SO4^2-(aq)",
+            "id": 1
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2Na^+(aq)",
+            "id": 2
+        }, {
+            "t": "2OH^-(aq)",
+            "id": 3
+        }, {
+            "t": "→",
+            "type": "sep"
+        }, {
+            "t": "2Na^+(aq)",
+            "id": 4
+        }, {
+            "t": "SO4^2-(aq)",
+            "id": 5
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2H2O(l)",
+            "id": 6
+        }],
+        "spectators": [1, 2, 4, 5],
+        "net": "H^+(aq) + OH^-(aq) → H2O(l)",
+        "simplification": "Simplified: <b>H⁺(aq) + OH⁻(aq) → H₂O(l)</b>"
+    }, {
+        "id": 1,
+        "type": "Q2: Acid + Metal",
+        "title": "Reaction of magnesium with dilute hydrochloric acid",
+        "desc": "magnesium + hydrochloric acid",
+        "states": ["(s)", "(aq)", "(aq)", "(g)"],
+        "ionizable": [false, true, true, false],
+        "hint1": "Magnesium is a solid (s). Hydrogen is a gas (g).",
+        "molecules": [{
+            "label": "Mg",
+            "ions": "Mg(s)"
+        }, {
+            "label": "2HCl",
+            "ions": "2H^+(aq) + 2Cl^-(aq)"
+        }, {
+            "label": "MgCl2",
+            "ions": "Mg^2+(aq) + 2Cl^-(aq)"
+        }, {
+            "label": "H2",
+            "ions": "H2(g)"
+        }],
+        "flow": [{
+            "t": "Mg(s)",
+            "id": 0
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2H^+(aq)",
+            "id": 1
+        }, {
+            "t": "2Cl^-(aq)",
+            "id": 2
+        }, {
+            "t": "→",
+            "type": "sep"
+        }, {
+            "t": "Mg^2+(aq)",
+            "id": 3
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2Cl^-(aq)",
+            "id": 4
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "H2(g)",
+            "id": 5
+        }],
+        "spectators": [2, 4],
+        "net": "Mg(s) + 2H^+(aq) → Mg^2+(aq) + H2(g)"
+    }, {
+        "id": 2,
+        "type": "Q3: Acid + Carbonate",
+        "title": "Reaction of aqueous potassium carbonate with dilute nitric acid",
+        "desc": "potassium carbonate + nitric acid",
+        "states": ["(aq)", "(aq)", "(aq)", "(g)", "(l)"],
+        "ionizable": [true, true, true, false, false],
+        "hint1": "Carbon dioxide is a gas (g) and water is a liquid (l).",
+        "molecules": [{
+            "label": "K2CO3",
+            "ions": "2K^+(aq) + CO3^2-(aq)"
+        }, {
+            "label": "2HNO3",
+            "ions": "2H^+(aq) + 2NO3^-(aq)"
+        }, {
+            "label": "2KNO3",
+            "ions": "2K^+(aq) + 2NO3^-(aq)"
+        }, {
+            "label": "CO2",
+            "ions": "CO2(g)"
+        }, {
+            "label": "H2O",
+            "ions": "H2O(l)"
+        }],
+        "flow": [{
+            "t": "2K^+(aq)",
+            "id": 0
+        }, {
+            "t": "CO3^2-(aq)",
+            "id": 1
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2H^+(aq)",
+            "id": 2
+        }, {
+            "t": "2NO3^-(aq)",
+            "id": 3
+        }, {
+            "t": "→",
+            "type": "sep"
+        }, {
+            "t": "2K^+(aq)",
+            "id": 4
+        }, {
+            "t": "2NO3^-(aq)",
+            "id": 5
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "CO2(g)",
+            "id": 6
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "H2O(l)",
+            "id": 7
+        }],
+        "spectators": [0, 3, 4, 5],
+        "net": "CO3^2-(aq) + 2H^+(aq) → CO2(g) + H2O(l)"
+    }, {
+        "id": 3,
+        "type": "Q4: Alkali + Ammonium salt",
+        "title": "Reaction of aqueous ammonium sulfate with aqueous sodium hydroxide",
+        "desc": "ammonium sulfate + sodium hydroxide",
+        "states": ["(aq)", "(aq)", "(aq)", "(g)", "(l)"],
+        "ionizable": [true, true, true, false, false],
+        "hint1": "Ammonia is a gas (g) and water is a liquid (l).",
+        "molecules": [{
+            "label": "(NH4)2SO4",
+            "ions": "2NH4^+(aq) + SO4^2-(aq)"
+        }, {
+            "label": "2NaOH",
+            "ions": "2Na^+(aq) + 2OH^-(aq)"
+        }, {
+            "label": "Na2SO4",
+            "ions": "2Na^+(aq) + SO4^2-(aq)"
+        }, {
+            "label": "2NH3",
+            "ions": "2NH3(g)"
+        }, {
+            "label": "2H2O",
+            "ions": "2H2O(l)"
+        }],
+        "flow": [{
+            "t": "2NH4^+(aq)",
+            "id": 0
+        }, {
+            "t": "SO4^2-(aq)",
+            "id": 1
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2Na^+(aq)",
+            "id": 2
+        }, {
+            "t": "2OH^-(aq)",
+            "id": 3
+        }, {
+            "t": "→",
+            "type": "sep"
+        }, {
+            "t": "2Na^+(aq)",
+            "id": 4
+        }, {
+            "t": "SO4^2-(aq)",
+            "id": 5
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2NH3(g)",
+            "id": 6
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2H2O(l)",
+            "id": 7
+        }],
+        "spectators": [1, 2, 4, 5],
+        "net": "NH4^+(aq) + OH^-(aq) → NH3(g) + H2O(l)",
+        "simplification": "Simplified: <b>NH₄⁺(aq) + OH⁻(aq) → NH₃(g) + H₂O(l)</b>"
+    }, {
+        "id": 4,
+        "type": "Q5: Precipitation",
+        "title": "Reaction of aqueous sodium hydroxide with aqueous copper(II) chloride",
+        "desc": "sodium hydroxide + copper(II) chloride",
+        "states": ["(aq)", "(aq)", "(s)", "(aq)"],
+        "ionizable": [true, true, false, true],
+        "hint1": "Copper(II) hydroxide is an insoluble precipitate (s).",
+        "molecules": [{
+            "label": "2NaOH",
+            "ions": "2Na^+(aq) + 2OH^-(aq)"
+        }, {
+            "label": "CuCl2",
+            "ions": "Cu^2+(aq) + 2Cl^-(aq)"
+        }, {
+            "label": "Cu(OH)2",
+            "ions": "Cu(OH)2(s)"
+        }, {
+            "label": "2NaCl",
+            "ions": "2Na^+(aq) + 2Cl^-(aq)"
+        }],
+        "flow": [{
+            "t": "2Na^+(aq)",
+            "id": 0
+        }, {
+            "t": "2OH^-(aq)",
+            "id": 1
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "Cu^2+(aq)",
+            "id": 2
+        }, {
+            "t": "2Cl^-(aq)",
+            "id": 3
+        }, {
+            "t": "→",
+            "type": "sep"
+        }, {
+            "t": "Cu(OH)2(s)",
+            "id": 4
+        }, {
+            "t": "+",
+            "type": "sep"
+        }, {
+            "t": "2Na^+(aq)",
+            "id": 5
+        }, {
+            "t": "2Cl^-(aq)",
+            "id": 6
+        }],
+        "spectators": [0, 3, 5, 6],
+        "net": "Cu^2+(aq) + 2OH^-(aq) → Cu(OH)2(s)"
+    }];
+    let currentProb = null,
+        ionizedState = [],
+        cancelledSet = new Set(),
+        scores = {},
+        currentMistakes = [false, false, false];
+    function renderSelectionScreen() {
+        const levelList = document.getElementById('level-list');
+        levelList.innerHTML = '';
+        problems.forEach((p, index) => {
+            const score = scores[p.id] || 0;
+            const btn = document.createElement('div');
+            btn.className = `level-card ${score === 3 ? 'completed' : ''}`;
+            btn.setAttribute('role', 'button');
+            btn.setAttribute('tabindex', '0');
+            btn.innerHTML = `<div><span class="level-kicker">${p.type.split(':')[0]}</span><h3>${p.type.replace(/^Q\d+: /, '')}</h3><p>${p.title}</p><p style="margin-top:8px;">${formatChem(p.desc)}</p></div>${score > 0 ? `<div class="score-display">${renderStars(score)} ${score}/3 Stars</div>` : '<div class="score-display">Start ▶</div>'}`;
+            btn.onclick = () => startLevel(index);
+            btn.onkeydown = e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    startLevel(index)
+                }
+            };
+            levelList.appendChild(btn)
+        })
+    }
+    function startLevel(index) {
+        initAudio();
+        currentProb = problems[index];
+        ionizedState = new Array(currentProb.molecules.length).fill(false);
+        cancelledSet.clear();
+        currentMistakes = [false, false, false];
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        document.getElementById('main-heading').innerText = 'Writing Ionic Equations';
+        document.getElementById('reaction-chip').innerText = currentProb.type.split(':')[0];
+        document.getElementById('reaction-title').innerText = currentProb.type.replace(/^Q\d+: /, '');
+        document.getElementById('reaction-desc-side').innerText = currentProb.title;
+        document.getElementById('step1-desc').innerText = formatChem(currentProb.desc);
+        document.querySelectorAll('.step').forEach(s => {
+            s.style.display = 'none';
+            s.classList.remove('active', 'completed', 'pulse')
+        });
+        setupStep1();
+        nextStep(1)
+    }
+    function setupStep1() {
+        const zone = document.getElementById('s1-equation');
+        let html = '';
+        currentProb.molecules.forEach((m, i) => {
+            html += `<span class="chem-part">${formatChem(m.label)}</span><select id="s1_${i}" aria-label="State symbol for ${m.label}"><option value="">?</option><option>(s)</option><option>(l)</option><option>(g)</option><option>(aq)</option></select>`;
+            const arrowPos = currentProb.molecules.length > 4 ? 2 : Math.floor(currentProb.molecules.length / 2);
+            if (i === arrowPos - 1)
+                html += '<span>→</span>';
+            else if (i !== currentProb.molecules.length - 1)
+                html += '<span>+</span>'
+        });
+        zone.innerHTML = html
+    }
+    function checkStep1() {
+        const h = 'hint1';
+        document.getElementById(h).style.display = 'none';
+        const userStates = currentProb.molecules.map((_, i) => document.getElementById(`s1_${i}`).value);
+        if (userStates.includes('')) {
+            currentMistakes[0] = true;
+            showHint(h, 'Please select all state symbols.');
+            soundEffects.dun();
+            return
+        }
+        if (userStates.every((s, i) => s === currentProb.states[i])) {
+            soundEffects.ding();
+            renderStep2();
+            nextStep(2)
+        } else {
+            currentMistakes[0] = true;
+            showHint(h, currentProb.hint1);
+            soundEffects.dun()
+        }
+    }
+    function renderStep2() {
+        const zone = document.getElementById('ion-zone');
+        zone.innerHTML = currentProb.molecules.map((m, i) => {
+            let labelWithState = m.label + currentProb.states[i];
+            let content = ionizedState[i] ? m.ions : labelWithState;
+            let html = `<div class="compound-card ${ionizedState[i] ? 'is-ionized' : ''}" onclick="toggleIonize(${i})" role="button" tabindex="0">${formatChem(content)}</div>`;
+            const arrowPos = currentProb.molecules.length > 4 ? 2 : Math.floor(currentProb.molecules.length / 2);
+            if (i === arrowPos - 1)
+                html += '<span>→</span>';
+            else if (i !== currentProb.molecules.length - 1)
+                html += '<span>+</span>';
+            return html
+        }).join('')
+    }
+    function toggleIonize(index) {
+        document.getElementById('hint2').style.display = 'none';
+        if (!currentProb.ionizable[index]) {
+            currentMistakes[1] = true;
+            showHint('hint2', 'Solids (s), liquids (l), and gases (g) do not dissociate into ions.');
+            soundEffects.dun();
+            return
+        }
+        ionizedState[index] = !ionizedState[index];
+        renderStep2()
+    }
+    function checkStep2() {
+        if (ionizedState.every((val, i) => val === currentProb.ionizable[i])) {
+            soundEffects.ding();
+            renderStep3();
+            nextStep(3)
+        } else {
+            currentMistakes[1] = true;
+            showHint('hint2', 'Please dissociate all aqueous (aq) compounds.');
+            soundEffects.dun()
+        }
+    }
+    function renderStep3() {
+        const zone = document.getElementById('cancel-zone');
+        zone.innerHTML = currentProb.flow.map(item => {
+            if (item.type === 'sep')
+                return `<span>${item.t}</span>`;
+            const isCancelled = cancelledSet.has(item.id);
+            return `<div class="ion ${isCancelled ? 'cancelled' : ''}" onclick="toggleCancel(${item.id})" role="button" tabindex="0">${formatChem(item.t)}</div>`
+        }).join('')
+    }
+    function toggleCancel(id) {
+        if (cancelledSet.has(id))
+            cancelledSet.delete(id);
+        else
+            cancelledSet.add(id);
+        renderStep3()
+    }
+    function checkStep3() {
+        const userChosen = Array.from(cancelledSet);
+        const missed = currentProb.spectators.some(s => !userChosen.includes(s));
+        const wrong = userChosen.some(u => !currentProb.spectators.includes(u));
+        if (!missed && !wrong) {
+            calculateFinalScore();
+            nextStep('final')
+        } else {
+            currentMistakes[2] = true;
+            showHint('hint3', wrong ? 'Error: You cancelled an ion that changed state or charge.' : 'Keep going. Some spectator ions remain on both sides.');
+            soundEffects.dun()
+        }
+    }
+    function calculateFinalScore() {
+        let finalScore = 0;
+        currentMistakes.forEach(m => {
+            finalScore += m ? .5 : 1
+        });
+        if (!scores[currentProb.id] || finalScore > scores[currentProb.id])
+            scores[currentProb.id] = finalScore;
+        if (finalScore >= 2.5)
+            soundEffects.fanfare();
+        else
+            soundEffects.ding();
+        document.getElementById('final-star-display').innerHTML = `<div style="font-size:1.25rem;font-weight:950;margin-bottom:6px;">Investigation Rating</div>${renderStars(finalScore)}<div style="font-weight:950;margin-top:4px;">${finalScore} / 3 Stars</div>`;
+        document.getElementById('net-result').innerHTML = formatChem(currentProb.net);
+        const simBox = document.getElementById('simplification-box');
+        if (currentProb.simplification) {
+            simBox.innerHTML = currentProb.simplification;
+            simBox.style.display = 'block'
+        } else
+            simBox.style.display = 'none'
+    }
+    function showHint(id, msg) {
+        const el = document.getElementById(id);
+        el.innerText = msg;
+        el.style.display = 'block';
+        el.classList.remove('pulse');
+        void el.offsetWidth;
+        el.classList.add('pulse')
+    }
+    function nextStep(n) {
+        ['pi1', 'pi2', 'pi3', 'pifinal'].forEach(id => document.getElementById(id).className = 'progress-item');
+        if (typeof n === 'number') {
+            if (n > 1) {
+                const prev = document.getElementById('step' + (n - 1));
+                prev.classList.remove('active');
+                prev.classList.add('completed')
+            }
+            const current = document.getElementById('step' + n);
+            current.style.display = 'block';
+            setTimeout(() => current.classList.add('active', 'pulse'), 10);
+            const titles = ['', 'Step 1: State Symbols', 'Step 2: Ionisation', 'Step 3: Spectator Ions'];
+            document.getElementById('progress').innerText = titles[n];
+            for (let i = 1; i < n; i++)
+                document.getElementById('pi' + i).classList.add('done');
+            document.getElementById('pi' + n).classList.add('active')
+        } else if (n === 'final') {
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step3').classList.add('completed');
+            const final = document.getElementById('final');
+            final.style.display = 'block';
+            setTimeout(() => final.classList.add('active', 'pulse'), 10);
+            document.getElementById('progress').innerText = 'Investigation Complete';
+            ['pi1', 'pi2', 'pi3'].forEach(id => document.getElementById(id).classList.add('done'));
+            document.getElementById('pifinal').classList.add('active')
+        }
+    }
+    function goHome() {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('setup-screen').classList.remove('hidden');
+        document.getElementById('main-heading').innerText = 'Writing Ionic Equations';
+        renderSelectionScreen()
+    }
+    renderSelectionScreen();
+    </script>
 </body>
 </html>
